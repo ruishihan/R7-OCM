@@ -79,6 +79,15 @@ endgroup
 connect_bd_net [get_bd_pins processing_system7_0/FCLK_CLK1] [get_bd_pins processing_system7_0/S_AXI_HP0_ACLK]
 
 startgroup
+set_property -dict [list CONFIG.PCW_SPI_PERIPHERAL_FREQMHZ {200} CONFIG.PCW_SPI1_PERIPHERAL_ENABLE {1}] [get_bd_cells processing_system7_0]
+endgroup
+
+startgroup
+create_bd_intf_port -mode Master -vlnv xilinx.com:interface:spi_rtl:1.0 SPI_1
+connect_bd_intf_net [get_bd_intf_pins processing_system7_0/SPI_1] [get_bd_intf_ports SPI_1]
+endgroup
+
+startgroup
 create_bd_port -dir O -from 0 -to 0 ENET0_GMII_TX_EN
 connect_bd_net [get_bd_pins /processing_system7_0/ENET0_GMII_TX_EN] [get_bd_ports ENET0_GMII_TX_EN]
 endgroup
@@ -151,6 +160,7 @@ add_files -norecurse R7OCM.srcs/sources_1/bd/armocm/hdl/armocm_wrapper.v
 
 create_ip -name clk_wiz -vendor xilinx.com -library ip -version 5.1 -module_name clk_wiz_0
 set_property -dict [list CONFIG.PRIM_IN_FREQ {25} CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {125.000} CONFIG.CLKIN1_JITTER_PS {400.0} CONFIG.MMCM_CLKFBOUT_MULT_F {40.000} CONFIG.MMCM_CLKIN1_PERIOD {40.0} CONFIG.MMCM_CLKOUT0_DIVIDE_F {8.000} CONFIG.CLKOUT1_JITTER {220.126} CONFIG.CLKOUT1_PHASE_ERROR {237.727}] [get_ips clk_wiz_0]
+set_property -dict [list CONFIG.USE_LOCKED {false} CONFIG.USE_RESET {false}] [get_ips clk_wiz_0]
 generate_target {instantiation_template} [get_files R7OCM.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci]
 
 create_ip -name blk_mem_gen -vendor xilinx.com -library ip -version 8.2 -module_name blk_mem_axi2s
@@ -170,6 +180,8 @@ add_files -norecurse src/rtl/S2A_controller.v
 add_files -norecurse src/rtl/AXI2S.v
 add_files -norecurse src/rtl/AXI2SREG.v
 add_files -norecurse src/rtl/reg_define.v
+add_files -norecurse src/rtl/CBusReadMerge.v
+add_files -norecurse src/rtl/AD9361REG.v
 add_files -norecurse test/cntSrc.v
 
 set_property top R7OCM_top [current_fileset]
