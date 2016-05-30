@@ -3,7 +3,8 @@ R7使用说明
 #本文分三部分介绍R7的使用方法：
 1. 对SD卡进行分区并制作成系统盘
 2. 启动ARM，并向R7上传文件
-3. 
+3. 在PC端接收并查看数据 及 通过curl对R7各参数进行配置
+
 #本说明默认具备以下环境：
 1. 文件夹root.full.function，可从指定网址下载
 2. Ubuntu 14.04 LTS 系统，并且装有git、ssh、curl、Vivado_2014.4、gtkterm
